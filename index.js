@@ -1,5 +1,4 @@
 import express from "express";
-import axios from "axios";
 import dotenv from "dotenv";
 import Groq from "groq-sdk";
 import helmet from "helmet";
@@ -38,14 +37,28 @@ app.use(
   })
 );
 
-// Rate limiting
-const limiter = rateLimit({
+// Define different rate limits for different types of endpoints
+const strictLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again later.",
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-app.use("/fortune", limiter);
+const baseLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // More lenient limit for basic endpoints
+  message: "Too many requests from this IP, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply rate limiting globally with a more lenient limit
+app.use(baseLimiter);
+
+// Apply stricter rate limiting to specific endpoints
+app.use("/fortune", strictLimiter);
 
 // Force HTTPS in production
 if (process.env.NODE_ENV === "production") {
