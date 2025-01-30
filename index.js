@@ -250,15 +250,16 @@ IMPORTANT:
 // Register error handler
 app.use(errorHandler);
 
+// Store the server instance
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+});
+
 // Graceful shutdown
 process.on("SIGTERM", () => {
   console.log("SIGTERM signal received: closing HTTP server");
-  app.close(() => {
+  server.close(() => {
     console.log("HTTP server closed");
     process.exit(0);
   });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
 });
