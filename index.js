@@ -22,7 +22,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 
 // Security middleware
 app.use(helmet()); // Add security headers
