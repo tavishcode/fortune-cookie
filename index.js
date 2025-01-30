@@ -120,51 +120,90 @@ app.post("/fortune", validateFortuneRequest, async (req, res, next) => {
 
     const prompt = `Generate a single, short, and unique fortune cookie message that will make someone both laugh and think.
 
-    Theme: ${
+Theme: ${
       theme === "wholesome"
-        ? "Write an encouraging message that's refreshingly original. Think supportive friend energy, but with an unexpected twist that makes it memorable. The tone should be warm but never saccharine, with subtle humor that enhances rather than undermines the positivity."
+        ? "Create a delightfully uplifting message that celebrates the quirky, endearing aspects of being human. Think of it as a warm hug wrapped in a clever observation that makes someone smile and feel genuinely good about themselves. The tone should sparkle with playful wisdom and capture life's magical little moments."
         : "Create a playfully savage observation about daily life, personal habits, or human nature. The message should be cleverly critical but avoid overused topics (NO browser history, phone addiction, or social media jokes). Think the perfect mix of psychological insight and playful callout that makes someone feel seen in an uncomfortable way."
     }
-    
-    To ensure quality, follow these steps:
-    
-    1. First, generate 3-4 candidate messages following these guardrails:
-       - Max 15 words (shorter = better)
-       - Must avoid: browser history, internet habits, phone use, or social media jokes
-       - Should focus on: personality quirks, daily habits, self-perception, life choices
-       - Must include a specific, concrete observation (no vague platitudes)
-       - Humor should come from psychological insight, not technological references
-       
-    2. Then, score each candidate on:
-       - Originality (1-5): How unique and unexpected is it?
-       - Memorability (1-5): Would someone want to share this?
-       - Voice (1-5): Does it sound authentically human?
-       - Impact (1-5): Does it land emotionally (wholesome) or comedically (savage)?
-    
-    3. Finally:
-       - Pick the candidate with the highest total score
-       - Make one final polish pass to tighten the language
-       - Ensure it stays under 15 words while maintaining impact
-       - Output the final message in JSON following this schema: ${jsonSchema}
-    
-    Remember:
-    - Focus on universal human experiences and behaviors
-    - Dark humor should come from uncomfortable truths, not tech-related embarrassment
-    - The best messages feel both personal and universal
-    - When in doubt, be more specific and concrete
-    
-    Example wholesome messages: 
-    - "Your houseplants secretly appreciate your apologies after forgetting to water them."
-    - "Even your microwave enjoys watching you dance while waiting for food."
-    - "That weird childhood hobby you loved? It's still proud of you."
-    
-    Example dark messages: 
-    - "That perfect comeback you practiced in the shower still wouldn't have worked."
-    - "Your 'organized chaos' system is just regular chaos with better marketing."
-    - "Your self-proclaimed good taste is mostly just expensive taste."
-    
-    IMPORTANT: Your final output must be a single JSON object following this exact schema: ${jsonSchema}
-    `;
+
+Step-by-Step Creation Process:
+
+1. IDEATION (Generate 4 candidates)
+   - First, take a deep breath and let your creativity flow
+   - For each candidate, pick a different focus area:
+     Wholesome Mode Areas:
+     - Unexpected daily joys
+     - Personal growth moments
+     - Connection with objects/nature
+     - Acts of self-kindness
+     
+     Dark Mode Areas:
+     - Personal contradictions
+     - Daily self-deceptions
+     - Aspirational facades
+     - Decision-making patterns
+
+2. EVALUATION (Score each candidate)
+   Rate each message on these criteria (1-5):
+   - Freshness: Does it avoid these overused elements?
+     AVOID:
+     - "Your FBI agent..."
+     - "Your future self..."
+     - Generic inspiration
+     INCLUDE:
+     - Specific, novel observations
+     
+   - Emotional Impact: Does it create a strong feeling?
+     AVOID:
+     - Vague platitudes
+     - Forced humor
+     INCLUDE:
+     - Genuine insight
+     - Relatable moment
+     
+   - Craft: Is it well-constructed?
+     AVOID:
+     - Over 15 words
+     - Abstract concepts
+     INCLUDE:
+     - Concrete details
+     - Smooth flow
+
+3. POLISHING
+   - Select highest-scoring message
+   - Ensure every word serves a purpose
+   - Check that tone matches theme
+   - Format as JSON per schema: ${jsonSchema}
+
+STRONG Examples (Wholesome):
++ "The plants on your windowsill tell stories about your growing heart."
++ "Your midnight snack adventures make the kitchen feel less lonely."
++ "Each time you giggle at your own joke, a star gets brighter."
++ "The universe collects the tiny victories you forget to celebrate."
+
+WEAK Examples (Wholesome):
+- "Your awkwardness is actually cute" (backhanded)
+- "Good things come to those who wait" (cliché)
+- "You're doing better than you think!" (generic)
+- "Keep pushing through the hard times" (vague)
+
+STRONG Examples (Dark):
++ "Your color-coded planner can't organize away your commitment issues."
++ "That personality trait you're proud of? Just a well-marketed flaw."
++ "Your 'minimalist aesthetic' is just expensive empty space."
++ "Your emergency fund knows it's really your impulse shopping budget."
+
+WEAK Examples (Dark):
+- "Your browser history..." (overused tech joke)
+- "Your phone knows..." (tech-focused)
+- "You'll die alone" (too harsh)
+- "Nobody likes you" (not clever)
+
+IMPORTANT: 
+1. Your final output must be a single JSON object following this schema: ${jsonSchema}
+2. Ensure the message is exactly ONE message that matches the theme
+3. Keep it under 15 words
+`;
 
     const chatCompletion = await groq.chat.completions.create({
       messages: [
