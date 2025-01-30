@@ -22,6 +22,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
+app.set("trust proxy", true);
+
 // Security middleware
 app.use(helmet()); // Add security headers
 app.use(express.json({ limit: "10kb" })); // Limit payload size
