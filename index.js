@@ -377,9 +377,8 @@ IMPORTANT:
           finalMessageResponse = parsed;
           break; // Break out of the fallbackModels loop.
         } catch (error) {
-          // If the error indicates a rate limit, log and try the next model.
-          if (error.response && error.status === 429) {
-            console.warn(
+          if (error instanceof Groq.APIError && error.status === 429) {
+            console.log(
               `Rate limited using model ${model}: ${error.message}. Trying next model.`
             );
             continue;
