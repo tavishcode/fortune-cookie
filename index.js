@@ -87,7 +87,7 @@ const jsonSchema = JSON.stringify(schema, null, 4);
 
 // Custom error handler
 const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
+  console.error("Error handler caught an error:", err.stack);
   res.status(500).json({
     error:
       process.env.NODE_ENV === "production"
@@ -123,13 +123,17 @@ app.get("/", (req, res) => {
 
 app.post("/fortune", validateFortuneRequest, async (req, res, next) => {
   try {
+    console.log("Received /fortune request with body:", req.body);
+
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.error("Validation errors:", errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { theme } = req.body;
+    console.log(`Request theme: ${theme}`);
 
     // Helper: returns random elements from an array.
     function getRandomElements(arr, count = 3) {
@@ -304,9 +308,10 @@ IMPORTANT:
 `;
 
     const userPrompt = "Generate";
+    console.log("Constructed system prompt.");
 
     // List of fallback models available on the GroqCloud free tier.
-    // (The first model is the primary model; if a 429 is encountered, the next is used.)
+    // (The first model is the primary model; if a 429 is encountered or a non-rate-limit error occurs 3 times, the next is used.)
     const fallbackModels = [
       "llama-3.3-70b-versatile",
       "llama3-70b-8192",
@@ -320,13 +325,13 @@ IMPORTANT:
     let finalMessageResponse = null;
     let lastError = null;
 
-    // Try multiple attempts, cycling through fallback models if necessary.
-    for (
-      let attempt = 0;
-      attempt < maxAttempts && !finalMessageResponse;
-      attempt++
-    ) {
-      for (const model of fallbackModels) {
+    // Iterate through each model.
+    for (const model of fallbackModels) {
+      console.log(`Trying model: ${model}`);
+      let attempts = 0;
+      while (attempts < maxAttempts && !finalMessageResponse) {
+        attempts++;
+        console.log(`Model ${model} - Attempt ${attempts} of ${maxAttempts}`);
         try {
           const chatCompletion = await groq.chat.completions.create({
             messages: [
@@ -339,7 +344,7 @@ IMPORTANT:
                 content: userPrompt,
               },
             ],
-            model, // Use the current model from fallbackModels
+            model, // Use the current model
             temperature: 1,
             response_format: { type: "json_object" },
           });
@@ -348,12 +353,25 @@ IMPORTANT:
           if (!responseText) {
             throw new Error("Empty response from Groq API");
           }
+          console.log(
+            `Raw response from model ${model} (attempt ${attempts}): ${responseText.slice(
+              0,
+              200
+            )}...`
+          );
 
           // Clean up the response (e.g. remove markdown code fences)
           responseText = cleanJSONResponse(responseText);
+          console.log(
+            `Cleaned response from model ${model}: ${responseText.slice(
+              0,
+              200
+            )}...`
+          );
 
           // Try to parse the response
           const parsed = JSON.parse(responseText);
+          console.log(`Parsed JSON from model ${model}:`, parsed);
 
           // Validate the JSON schema
           if (
@@ -375,26 +393,41 @@ IMPORTANT:
 
           // If we got here, the response is valid.
           finalMessageResponse = parsed;
-          break; // Break out of the fallbackModels loop.
+          console.log(
+            `Valid response obtained from model ${model} on attempt ${attempts}. finalMessage: "${parsed.finalMessage}"`
+          );
         } catch (error) {
+          // If a rate limit error is encountered, stop retrying this model.
           if (error instanceof Groq.APIError && error.status === 429) {
             console.log(
-              `Rate limited using model ${model}: ${error.message}. Trying next model.`
+              `Rate limited using model ${model} on attempt ${attempts}: ${error.message}. Switching to next model.`
             );
-            continue;
+            break; // Exit the inner loop for this model
           }
-          console.error(`Error using model ${model}: ${error.message}`);
           lastError = error;
-          // Continue to try the next model in fallbackModels.
+          console.error(
+            `Error using model ${model} on attempt ${attempts}: ${error.message}`
+          );
+          if (attempts < maxAttempts) {
+            console.log("Waiting for 1 second before retrying this model...");
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+          }
         }
       }
-      if (!finalMessageResponse) {
-        // Wait a moment before retrying all models again.
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (finalMessageResponse) {
+        console.log(
+          `Exiting model loop; valid response obtained from model ${model}.`
+        );
+        break;
+      } else {
+        console.log(
+          `No valid response from model ${model} after ${attempts} attempt(s). Moving to next model.`
+        );
       }
     }
 
     if (!finalMessageResponse) {
+      console.error("All models exhausted. Last error:", lastError);
       throw (
         lastError ||
         new Error(
@@ -404,6 +437,7 @@ IMPORTANT:
     }
 
     // Return the details including prompts and the final response.
+    console.log("Returning final response to client.");
     res.json({
       systemPrompt: systemPrompt,
       userPrompt: userPrompt,
