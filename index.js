@@ -1,3 +1,7 @@
+// TODO: add the hardcoded fortune cookie messages as an array as a fallback when the LLM fails
+// TODO: in spline, if the api has not resolved, do not let the cookie break. we can solve this
+//       by adding a variable that is set on API success and unset on restart
+//       if the api fails, we can also set the fortune to "oops! our cloud-based fortune teller is failing, hit the back button below and try again"
 import express from "express";
 import dotenv from "dotenv";
 import Groq from "groq-sdk";
@@ -394,7 +398,7 @@ IMPORTANT:
           // If we got here, the response is valid.
           finalMessageResponse = parsed;
           console.log(
-            `Valid response obtained from model ${model} on attempt ${attempts}. finalMessage: "${parsed.finalMessage}"`
+            `Valid response obtained from model ${model} on attempt ${attempts}. theme: ${theme} finalMessage: "${parsed.finalMessage}"`
           );
         } catch (error) {
           // If a rate limit error is encountered, stop retrying this model.
