@@ -378,7 +378,7 @@ IMPORTANT:
           break; // Break out of the fallbackModels loop.
         } catch (error) {
           // If the error indicates a rate limit, log and try the next model.
-          if (error.response && error.response.status === 429) {
+          if (error.response && error.status === 429) {
             console.warn(
               `Rate limited using model ${model}: ${error.message}. Trying next model.`
             );
