@@ -644,9 +644,7 @@ IMPORTANT:
           : getRandomElements(FALLBACK_DARK, 1);
       res.json({
         response: {
-          response: {
-            finalMessage: randomFortune,
-          },
+          finalMessage: randomFortune,
         },
       });
     } else {
