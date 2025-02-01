@@ -408,10 +408,6 @@ IMPORTANT:
           console.error(
             `Error using model ${model} on attempt ${attempts}: ${error.message}`
           );
-          if (attempts < maxAttempts) {
-            console.log("Waiting for 1 second before retrying this model...");
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
         }
       }
       if (finalMessageResponse) {
