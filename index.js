@@ -284,17 +284,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const schema = {
-  properties: {
-    reasoning: { title: "Reasoning", type: "string" },
-    score: { title: "Score", type: "number" },
-    finalMessage: { title: "finalMessage", type: "string" },
-  },
-  required: ["reasoning", "score", "finalMessage"],
-  title: "ResponseSchema",
-  type: "object",
-};
-const jsonSchema = JSON.stringify(schema, null, 4);
+const jsonSchema = `{"reasoning": "string - explains reasoning behind the chosen fortune cookie message", "score": "string - score between 1/5 indicating quality of chosen fortune cooking message", "finalMessage": "string - final fortune cookie message to return to the user"}`;
 
 // Custom error handler
 const errorHandler = (err, req, res, next) => {
@@ -588,7 +578,7 @@ IMPORTANT:
           if (
             typeof parsed !== "object" ||
             typeof parsed.reasoning !== "string" ||
-            typeof parsed.score !== "number" ||
+            typeof parsed.score !== "string" ||
             typeof parsed.finalMessage !== "string"
           ) {
             throw new Error("Response JSON does not match the required schema");
