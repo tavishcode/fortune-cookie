@@ -52,6 +52,14 @@ npm start
 
 Open your browser and go to `http://localhost:3000` to use the app.
 
+## Credits
+
+Full credits for the whole game available on https://smashthefortunecookie.fun
+
+The backend itself was mainly written using large language models (AI) and uses several open source libs
+
+If there are resources you noticed that I missed, please let me know.
+
 ## Feedback
 
 If you have any positive/negative comments about this project please reach out to me on email at tavish [dot] gobindram [at] gmail [dot] com, [twitter](https://x.com/tavishtweets), [linkedin](https://www.linkedin.com/in/tgobindram) or [instagram](https://instagram.com/instavish25)
