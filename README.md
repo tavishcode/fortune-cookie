@@ -44,15 +44,18 @@ The version published is spline is different from the live version on https://sm
    npm install
    ```
 
-## Usage
+## Testing
 
 Start the development server:
 
 ```bash
 node index.js
 ```
+You can test this backend locally using a service like Insomnia, Postman or using cURL from your terminal.
 
-Open your browser and go to `http://localhost:3000` to use the app.
+## Integrate with Spline
+
+To integrate it with your Spline project, you would want to deploy your backend (I used [railway](https://railway.com/)) and then link it using [Spline's Real-time API feature](https://docs.spline.design/doc/real-time-api/docpsbqCZYu8) 
 
 ## Credits
 
