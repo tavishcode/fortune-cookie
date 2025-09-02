@@ -10,13 +10,13 @@ Feel free to use this to make your own project or to learn how my game was built
 
 ![Screenshot of fortune cookie game homepage](./game_homepage_screenshot.png)
 
-### Nice Fortune Cookie
+### Wholesome Fortune Cookie
 
-![Screenshot of nice fortune cookie saying "Your plants love your chatter"](./nice_fortune_cookie_screenshot.png)
+![Screenshot of wholesome fortune cookie saying "Your plants love your chatter"](./wholesome_fortune_cookie_screenshot.png)
 
-### Naughty Fortune Cookie
+### Dark Fortune Cookie
 
-![Screenshot of naughty fortune cookie saying New Year goals fuel next year's regrets"](./naughty_fortune_cookie_screenshot.png)
+![Screenshot of dark fortune cookie saying New Year goals fuel next year's regrets"](./dark_fortune_cookie_screenshot.png)
 
 ## Where is the Front End?
 
