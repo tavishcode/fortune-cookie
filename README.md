@@ -49,7 +49,7 @@ The version published is spline is different from the live version on https://sm
 Start the development server:
 
 ```bash
-npm start
+node index.js
 ```
 
 Open your browser and go to `http://localhost:3000` to use the app.
