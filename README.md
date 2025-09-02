@@ -20,9 +20,11 @@ Feel free to use this to make your own project or to learn how my game was built
 
 ## Where is the Front End?
 
-The frontend is built using https://spline.design so there isn't a frontend repository. But, I have made a [modified version](https://app.spline.design/community/file/d6076bba-ed75-41cf-92b4-054de32204a5) of the file accessible in the Spline community and you can remix this to make your own game.
+The [frontend](https://app.spline.design/community/file/d6076bba-ed75-41cf-92b4-054de32204a5) is published as a spline community file that can be remixed.
 
-The modified version does not contain 2 things:
+There is no frontend repository because it was made using https://spline.design.
+
+The version published is spline is different from the live version on https://smashthefortunecookie.fun in two ways:
 
 1. The [soundtrack](https://www.chosic.com/download-audio/59068/) has been removed to avoid any music distribution violation
 2. The API integration with my hosted backend has been removed to avoid rate limit issues or abuse.
