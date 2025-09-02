@@ -37,7 +37,7 @@ The version published is spline is different from the live version on https://sm
    ```
 2. Navigate to the project directory:
    ```bash
-   cd fotunecookie
+   cd fortune-cookie
    ```
 3. Install dependencies:
    ```bash
